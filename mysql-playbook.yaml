@@ -13,6 +13,11 @@
         state: started
         enabled: yes
 
+    - name: Installing PyMySQL   # inorder to use "community.mysql.mysql_info" 
+      ansible.builtin.package:
+        name: PyMySQL
+        state: present
+
     - name: Check whether password is set or not
       community.mysql.mysql_info:
         login_user: root
