@@ -6,10 +6,21 @@
       ansible.builtin.package:
         name: mysql-server
         state: present
+
     - name: Starting and enabling
       ansible.builtin.service:
         name: mysqld
         state: started
         enabled: yes
+
+    - name: Check whether password is set or not
+      community.mysql.mysql_info:
+        login_user: root
+        login_password: ExpenseApp@1
+        host: 54.161.119.69
+      register: db_info
+      ignore_errors: true
+
     - name: Setting password
-      ansible.builtin.shell: mysql_secure_installation --set-root-pass ExpenseApp@1
+      ansible.builtin.command: mysql_secure_installation --set-root-pass ExpenseApp@1
+      when: db_info.failed is true

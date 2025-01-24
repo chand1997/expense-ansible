@@ -1,0 +1,29 @@
+- name: Backend installations
+  hosts: backend
+  become: yes
+  tasks:
+    - name: Installing nodejs
+      ansible.builtin.package:
+        name: nodejs=20.*
+        state: present
+
+    - name: Adding user expense
+      ansible.builtin.shell: useradd expense
+
+    - name: Making directory app
+      ansible.builtin.command: mkdir /app
+
+    - name: Downloading source code
+      ansible.builtin.shell: curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+
+    - name: Changing directiory to app
+      ansible.builtin.command: cd /app
+
+    - name: Unzip source code to /app
+      ansible.builtin.command: unzip /tmp/backend.zip
+
+    - name: Changing directiory to app
+      ansible.builtin.command: cd /app
+
+    - name: Installing backend packages from source code
+      ansible.builtin.shell: npm install
