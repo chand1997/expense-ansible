@@ -21,6 +21,10 @@
       register: db_info
       ignore_errors: true
 
+    - name: Print info
+      ansible.builtin.debug:
+        msg: "{{ db_info }}"
+
     - name: Setting password
       ansible.builtin.command: mysql_secure_installation --set-root-pass ExpenseApp@1
       when: db_info.failed is true
