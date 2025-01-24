@@ -1,6 +1,8 @@
 - name: Install Mysql-server
   hosts: mysql
   become: yes
+  vars:
+    my_root_password: ExpenseApp@1
   tasks:
     - name: Installing
       ansible.builtin.package:
@@ -13,17 +15,20 @@
         state: started
         enabled: yes
 
-    - name: Installing PyMySQL   # inorder to use "community.mysql.mysql_info" 
+    - name: Installing Python libraries
       ansible.builtin.pip:
-        name: PyMySQL
+        name: "{{ item }}"
         state: present
         executable: pip3.9
+      loop:
+        - PyMySQL # inorder to use "community.mysql.mysql_info"
+        - cryptography # inorder to avoid setting password every time.
 
     - name: Check whether password is set or not
       community.mysql.mysql_info:
         login_user: root
-        login_password: ExpenseApp@1
-        # host: 54.161.119.69
+        login_password: "{{my_root_password}}"
+        login_host: 54.161.119.69
       register: db_info
       ignore_errors: true
 
@@ -32,5 +37,5 @@
         msg: "{{ db_info }}"
 
     - name: Setting password
-      ansible.builtin.command: mysql_secure_installation --set-root-pass ExpenseApp@1
+      ansible.builtin.command: mysql_secure_installation --set-root-pass "{{my_root_password}}"
       when: db_info.failed is true
