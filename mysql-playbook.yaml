@@ -19,7 +19,7 @@
         login_password: ExpenseApp@1
         host: 54.161.119.69
       register: db_info
-      ignore_errors: true
+      # ignore_errors: true
 
     - name: Print info
       ansible.builtin.debug:
