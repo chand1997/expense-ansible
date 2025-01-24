@@ -14,9 +14,10 @@
         enabled: yes
 
     - name: Installing PyMySQL   # inorder to use "community.mysql.mysql_info" 
-      ansible.builtin.package:
+      ansible.builtin.pip:
         name: PyMySQL
         state: present
+        executable: pip3.9
 
     - name: Check whether password is set or not
       community.mysql.mysql_info:
