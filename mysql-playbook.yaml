@@ -17,7 +17,7 @@
       community.mysql.mysql_info:
         login_user: root
         login_password: ExpenseApp@1
-        host: 54.161.119.69
+        # host: 54.161.119.69
       register: db_info
       # ignore_errors: true
 
