@@ -34,6 +34,9 @@
     - name: Changing directiory to app
       ansible.builtin.command: cd /app
 
+    - name: Delete previous code in /app
+      ansible.builtin.command: rm -rf /app/*
+
     - name: Unzip source code to /app
       ansible.builtin.command: unzip /tmp/backend.zip
 
