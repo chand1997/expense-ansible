@@ -16,6 +16,7 @@
     - name: Checking user expense exists
       ansible.builtin.command: id expense
       register: output
+      ignore_errors: true
 
     - name: Print
       ansible.builtin.debug:
