@@ -26,7 +26,7 @@
       when: output.failed is true
 
     - name: Making directory app
-      ansible.builtin.command: mkdir /app
+      ansible.builtin.command: mkdir -p /app
 
     - name: Downloading source code
       ansible.builtin.shell: curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
