@@ -13,42 +13,26 @@
         name: nodejs
         state: present
 
-    - name: Checking user expense exists
-      ansible.builtin.command: id expense
-      register: output
-      ignore_errors: true
+    - name: Add user "expense"
+      ansible.builtin.user:
+        name: expense
+        state: present
 
-    - name: Print
-      ansible.builtin.debug:
-        msg: "{{ output }}"
+    - name: Ensure /app directory exists
+      ansible.builtin.file:
+        path: /app
+        state: directory
 
-    - name: Adding user expense
-      ansible.builtin.command: useradd expense
-      when: output.failed is true
-
-    - name: Making directory app
-      ansible.builtin.command: mkdir -p /app
-
-    - name: Delete previous downloaded code
-      ansible.builtin.command: rm -f /tmp/backend.zip
-
-    - name: Downloading source code
-      ansible.builtin.command: curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
-
-    - name: Delete previous code in /app
-      ansible.builtin.command: rm -rf /app/*
-
-    - name: Changing directiory to app
-      ansible.builtin.command: cd /app
+    - name: download backend code
+      ansible.builtin.get_url:
+        url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+        dest: /tmp/backend.zip
 
     - name: unzip backend code
       ansible.builtin.unarchive:
         src: /tmp/backend.zip
         dest: /app
         remote_src: yes
-
-    - name: Changing directiory to app
-      ansible.builtin.command: cd /app
 
     - name: Install dependencies
       community.general.npm:
@@ -59,24 +43,26 @@
         src: backend.service
         dest: /etc/systemd/system/backend.service
 
-    - name: Daemon Reload
-      ansible.builtin.command: systemctl daemon-reload
+    - name: install python libs
+      ansible.builtin.pip:
+        name: "{{ item }}"
+        executable: pip3.9
+      loop:
+        - cryptography
+        - PyMySQL
 
-    - name: Starting and enabling backend
-      ansible.builtin.service:
-        name: backend
-        state: started
-        enabled: yes
+    - name: import mysql data
+      community.mysql.mysql_db:
+        state: import
+        name: all
+        login_user: root
+        login_password: ExpenseApp@1
+        login_host: 3.87.204.197
+        target: /app/schema/backend.sql
 
-    - name: Install mysql
-      ansible.builtin.package:
-        name: mysql
-        state: present
-
-    - name: Loading db schema
-      ansible.builtin.shell: mysql -h 3.87.204.197 -uroot -pExpenseApp@1 < /app/schema/backend.sql
-
-    - name: Restarting backend
-      ansible.builtin.service:
-        name: backend
+    - name: daemon reload and restart service
+      ansible.builtin.systemd_service:
+        enabled: true
         state: restarted
+        daemon_reload: true
+        name: backend
