@@ -51,7 +51,9 @@
       ansible.builtin.shell: npm install
 
     - name: Creating backend service
-      ansible.builtin.shell: cp -p backend.service /etc/systemd/system/backend.service
+      ansible.builtin.copy:
+        src: backend.service
+        dest: /etc/systemd/system/backend.service
 
     - name: Daemon Reload
       ansible.builtin.command: systemctl daemon-reload
