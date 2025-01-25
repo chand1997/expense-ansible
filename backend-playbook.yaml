@@ -29,7 +29,7 @@
       ansible.builtin.command: mkdir -p /app
 
     - name: Downloading source code
-      ansible.builtin.shell: curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+      ansible.builtin.shell: curl -p -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
 
     - name: Changing directiory to app
       ansible.builtin.command: cd /app
