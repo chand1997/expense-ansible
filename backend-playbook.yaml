@@ -13,6 +13,14 @@
         name: nodejs
         state: present
 
+    - name: Checking user expense exists
+      ansible.builtin.command: id expense
+      register: output
+
+    - name: Print
+      ansible.builtin.debug:
+        msg: "{{ output }}"
+
     - name: Adding user expense
       ansible.builtin.shell: useradd expense
 
