@@ -43,6 +43,7 @@
 
     - name: Unzip source code to /app
       ansible.builtin.shell: unzip /tmp/backend.zip -d /app
+      
 
     - name: Changing directiory to app
       ansible.builtin.command: cd /app
