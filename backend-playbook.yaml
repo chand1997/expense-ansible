@@ -23,6 +23,7 @@
 
     - name: Adding user expense
       ansible.builtin.shell: useradd expense
+      when: output.failed is true
 
     - name: Making directory app
       ansible.builtin.command: mkdir /app
