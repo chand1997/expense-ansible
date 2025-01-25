@@ -43,7 +43,7 @@
 
     - name: Creating backend service.
       ansible.builtin.copy:
-        src: /backend.service
+        src: backend.service
         dest: /etc/systemd/system/backend.service
 
     - name: install python libs
