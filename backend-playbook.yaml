@@ -35,7 +35,7 @@
       ansible.builtin.command: cd /app
 
     - name: Delete previous code in /app
-      ansible.builtin.shell: rm -rf /*
+      ansible.builtin.shell: rm -rf ./*
 
     - name: Unzip source code to /app
       ansible.builtin.command: unzip /tmp/backend.zip
