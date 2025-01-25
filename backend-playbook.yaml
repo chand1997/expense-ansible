@@ -8,7 +8,7 @@
       ansible.builtin.command: dnf enable nodejs:20 -y
 
     - name: Install nodejs and mysql
-      ansible.buitlin.package:
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       loop:
