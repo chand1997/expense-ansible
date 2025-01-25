@@ -50,8 +50,9 @@
     - name: Changing directiory to app
       ansible.builtin.command: cd /app
 
-    - name: Installing backend packages from source code
-      ansible.builtin.command: npm install
+    - name: Install dependencies
+      community.general.npm:
+        path: /app
 
     - name: Creating backend service
       ansible.builtin.copy:
