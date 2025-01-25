@@ -30,7 +30,7 @@
 
     - name: Unzip source code
       ansible.builtin.unarchive:
-        src: /tmp/fronend.zip
+        src: /tmp/frontend.zip
         dest: /usr/share/nginx/html
         remote_src: yes
 
