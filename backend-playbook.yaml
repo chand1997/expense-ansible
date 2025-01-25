@@ -70,7 +70,7 @@
         state: present
 
     - name: Loading db schema
-      ansible.builtin.command: mysql -h 3.87.204.197 -uroot -pExpenseApp@1 < /app/schema/backend.sql
+      ansible.builtin.shell: mysql -h 3.87.204.197 -uroot -pExpenseApp@1 < /app/schema/backend.sql
 
     - name: Restarting backend
       ansible.builtin.service:
