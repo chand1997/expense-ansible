@@ -35,7 +35,9 @@
       ansible.builtin.unarchive:
         src: /tmp/backend.zip
         dest: /app
-        remote_src: yes
+        remote_src: yes 
+        # By default unarchive module searches src file("/tmp/backend.zip") in local server(ansible-server)
+        # After giving "remote_src: yes", unarchive module searches src in remote server(backend-server) 
 
     - name: Install packages based on package.json.
       community.general.npm:
@@ -63,7 +65,7 @@
         login_password: ExpenseApp@1
         login_host: 3.87.204.197
 
-    - name: Daemon-reload, restart and enabling backen
+    - name: Daemon-reload, restart and enabling backend.
       ansible.builtin.systemd_service:
         name: backend
         enabled: true
