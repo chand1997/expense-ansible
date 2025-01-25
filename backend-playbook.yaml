@@ -2,9 +2,15 @@
   hosts: backend
   become: yes
   tasks:
+    - name: Disable default nodejs version(16)
+      ansible.builtin.command: dnf module disable nodejs -y
+
+    - name: Enable nodejs version(20)
+      ansible.builtin.command: dnf module enable nodejs:20 -y
+
     - name: Installing nodejs
       ansible.builtin.package:
-        name: nodejs=20.*
+        name: nodejs
         state: present
 
     - name: Adding user expense
