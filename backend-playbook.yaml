@@ -23,7 +23,7 @@
         msg: "{{ output }}"
 
     - name: Adding user expense
-      ansible.builtin.shell: useradd expense
+      ansible.builtin.command: useradd expense
       when: output.failed is true
 
     - name: Making directory app
@@ -33,22 +33,22 @@
       ansible.builtin.command: rm -f /tmp/backend.zip
 
     - name: Downloading source code
-      ansible.builtin.shell: curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+      ansible.builtin.command: curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
 
     - name: Delete previous code in /app
-      ansible.builtin.shell: rm -rf /app/*
+      ansible.builtin.command: rm -rf /app/*
 
     - name: Changing directiory to app
       ansible.builtin.command: cd /app
 
     - name: Unzip source code to /app
-      ansible.builtin.shell: unzip /tmp/backend.zip -d /app
+      ansible.builtin.command: unzip /tmp/backend.zip -d /app
 
     - name: Changing directiory to app
       ansible.builtin.command: cd /app
 
     - name: Installing backend packages from source code
-      ansible.builtin.shell: npm install
+      ansible.builtin.command: npm install
 
     - name: Creating backend service
       ansible.builtin.copy:
