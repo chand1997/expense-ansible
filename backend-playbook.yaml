@@ -33,3 +33,28 @@
 
     - name: Installing backend packages from source code
       ansible.builtin.shell: npm install
+
+    - name: Creating backend service
+      ansible.builtin.shell: cp -p backend.service /etc/systemd/system/backend.service
+
+    - name: Daemon Reload
+      ansible.builtin.command: systemctl daemon-reload
+
+    - name: Starting and enabling backend
+      ansible.builtin.service:
+        name: backend
+        state: started
+        enabled: yes
+
+    - name: Install mysql
+      ansible.builtin.package:
+        name: mysql
+        state: present
+
+    - name: Loading db schema
+      ansible.builtin.command: mysql -h 3.87.204.197 -uroot -pExpenseApp@1 < /app/schema/backend.sql
+
+    - name: Restarting backend
+      ansible.builtin.service:
+        name: backend
+        state: restarted
