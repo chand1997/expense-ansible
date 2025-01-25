@@ -28,7 +28,7 @@
       community.mysql.mysql_info:
         login_user: root
         login_password: "{{my_root_password}}"
-        login_host: 54.161.119.69
+        login_host: 3.87.204.197
       register: db_info
       ignore_errors: true
 
